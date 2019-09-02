@@ -6,11 +6,12 @@ public class KeyController : MonoBehaviour
 {
     public void Attack(PlayerController Player,PlayerController Target){
         if(Player.GetTarget() != Target.GetTarget() && !Target.IsBlock()){
+            Player.Attack();
             Target.Hit();
         }
     }
 
     public void Block(PlayerController Player){
-
+        Player.Block();
     }
 }
