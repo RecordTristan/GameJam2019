@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     private string _targetKey;
     private bool _isBlocking = false;
 
+    private bool _isDead = false;
+
     void Awake(){
         HideArrows();
     }
@@ -31,6 +33,10 @@ public class PlayerController : MonoBehaviour
     }
 
     public void Update(){
+        if(_isDead)
+            return;
+        if(!GameManager.instance.canPress)
+            return;
         switch(id){
             case 1:
                 if (Input.GetKeyDown(KeyCode.Joystick1Button16) || Input.GetKeyDown(KeyCode.S))//Intéraction
@@ -102,6 +108,10 @@ public class PlayerController : MonoBehaviour
         return _isBlocking;
     }
 
+    public bool IsDead(){
+        return _isDead;
+    }
+
     public void Action(string Key){
         HideArrows();
         if(Key == key.ToString()){
@@ -118,7 +128,11 @@ public class PlayerController : MonoBehaviour
             }
         }else{
             _target = GameManager.instance.GetPlayer(Key);
-            _isBlocking = false;
+            if(_target == null){
+                HideArrows();
+            }else{
+                _isBlocking = false;
+            }
             // _target = GameManager.instance.Attack(this,Key);
             // if(_shield < _shieldMax){
                 // _shield++;
@@ -128,10 +142,21 @@ public class PlayerController : MonoBehaviour
     }
 
     public void Hit(){
+        if(_isDead)
+            return;
         _health--;
         healthDisplay.Use();
+        if(_health == 0){
+            Die();
+        }
+    }
+    public void Die(){
+        this.gameObject.SetActive(false);
+        _isDead = true;
     }
     public void Block(){
+        if(_isDead)
+            return;
         _shield--;
         shieldDisplay.Use();
     }

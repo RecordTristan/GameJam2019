@@ -38,8 +38,10 @@ public class GameManager : MonoBehaviour
 
     void Update(){
         if(Input.GetKeyDown(KeyCode.Space)){
+            Debug.Log("OK");
             StartCoroutine(Action());
         }
+        Debug.Log(canPress);
     }
 
     public void AddNewPlayer(PlayerController player){
@@ -47,7 +49,12 @@ public class GameManager : MonoBehaviour
     }
 
     public PlayerController GetPlayer(string player){
-        return dicPlayers[player];
+        PlayerController Player = dicPlayers[player];
+        if(Player.IsDead()){
+            return null;
+        }else{
+            return Player;
+        }
     }
 
     public PlayerController Attack(PlayerController player, string target){
@@ -69,6 +76,8 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(rules.timeSelect);
         canPress = false;
         CheckActions();
+        yield return new WaitForSeconds(2f);
+        NewRound();
     }
 
     public void CheckActions(){
