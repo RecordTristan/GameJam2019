@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     public void Update(){
         if(_isDead)
             return;
-        if(!GameManager.instance.canPress)
+        if(!GameManager.instance.canPress && !GameManager.instance.duelPress)
             return;
         switch(id){
             case 1:
@@ -131,6 +131,7 @@ public class PlayerController : MonoBehaviour
     public void Action(string Key){
         if(GameManager.instance.dieTime){
             Hit();
+            HideArrows();
             return;
         }
         if(Key == key.ToString()){
@@ -147,11 +148,14 @@ public class PlayerController : MonoBehaviour
             }
         }else{
             _target = GameManager.instance.GetPlayer(Key);
+            _isBlocking = false;
             if(_target == null){
                 TargetImages[1].SetActive(false);
                 HideArrows();
             }else{
-                _isBlocking = false;
+                if(GameManager.instance.duelActive){
+                    StartCoroutine(GameManager.instance.AttackDuel());
+                }
             }
             // _target = GameManager.instance.Attack(this,Key);
             // if(_shield < _shieldMax){
@@ -194,9 +198,17 @@ public class PlayerController : MonoBehaviour
         HideArrows();
     }
 
+
     public void HideArrows(){
         for(int i = TargetImages.Length;i-->0;){
             TargetImages[i].SetActive(false);
         }
+    }
+    public void Reload(){
+        this.gameObject.SetActive(true);
+        _health = GameManager.instance.rules.health;
+        _shield = GameManager.instance.rules.shieldStart;
+        healthDisplay.Init(_health);
+        shieldDisplay.Init(_shield);
     }
 }

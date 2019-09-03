@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
     public GameObject exclamationGroup;
-    public GameObject GoImage;
+    public TextMeshProUGUI GoImage;
     
     void Awake(){
         if(GameManager.instance != null){
@@ -30,9 +31,17 @@ public class UIManager : MonoBehaviour
     }
 
     public void GoHide(){
-        GoImage.SetActive(false);
+        GoImage.gameObject.SetActive(false);
     }
     public void GoShow(){
-        GoImage.SetActive(true);
+        GoImage.gameObject.SetActive(true);
+    }
+
+    public void RedGo(){
+        GoImage.color = Color.red;
+    }
+
+    public void BlackGo(){
+        GoImage.color = Color.black;
     }
 }

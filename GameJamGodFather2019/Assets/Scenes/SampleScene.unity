@@ -387,7 +387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exclamationGroup: {fileID: 1235205997}
-  GoImage: {fileID: 1403529962}
+  GoImage: {fileID: 1403529964}
 --- !u!1001 &678695845
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -979,6 +979,8 @@ MonoBehaviour:
   rules: {fileID: 1370832206}
   canPress: 0
   dieTime: 0
+  duelActive: 0
+  duelPress: 0
 --- !u!4 &1370832208
 Transform:
   m_ObjectHideFlags: 0

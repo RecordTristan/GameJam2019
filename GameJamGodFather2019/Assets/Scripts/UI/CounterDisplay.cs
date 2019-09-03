@@ -15,8 +15,12 @@ public class CounterDisplay : MonoBehaviour
     }
 
     public void Init(int nbr){
-        for(int i=nbr;i-->0;){
-            display[i].SetActive(true);
+        for(int i=display.Length;i-->0;){
+            if(i>=nbr){
+                display[i].SetActive(false);
+            }else{
+                display[i].SetActive(true);
+            }
         }
     }
 

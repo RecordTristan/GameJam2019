@@ -18,9 +18,11 @@ public class GameManager : MonoBehaviour
     public bool canPress = false;
     public bool dieTime = false;
     public bool duelActive = false;
+    public bool duelPress = false;
     private KeyController _inputRules;
     private Dictionary<string,PlayerController> dicPlayers = new Dictionary<string, PlayerController>();
     private bool startTimer = true;
+    private bool reload = false;
 
     void Awake(){
         if(GameManager.instance != null){
@@ -41,8 +43,8 @@ public class GameManager : MonoBehaviour
     }
 
     void Update(){
-        if(Input.GetKeyDown(KeyCode.Space)){
-            // StartCoroutine(Action());
+        if(Input.GetKeyDown(KeyCode.R) && reload){
+            Reload();
         }
     }
 
@@ -112,9 +114,13 @@ public class GameManager : MonoBehaviour
         List<PlayerController> players = dicPlayers.Select(g => g.Value).Where(g => !g.IsDead()).ToList();
         if(players.Count == 2){
             duelActive = true;
+            UIManager.instance.RedGo();
             StartCoroutine(Duel());
-        }else{
+        }else if(players.Count > 2){
+            UIManager.instance.BlackGo();
             StartCoroutine(Action());
+        }else{
+            reload = true;
         }
     }
 
@@ -127,12 +133,34 @@ public class GameManager : MonoBehaviour
         UIManager.instance.ExclamationShow();
         yield return new WaitForSeconds(rules.timeFinish);
         canPress = false;
+        if(!duelPress){
+            UIManager.instance.ExclamationHide();
+            CheckActions();
+            foreach(PlayerController item in dicPlayers.Values){
+                item.Init();
+            }
+            yield return new WaitForSeconds(2f);
+            NewRound();
+        }
+    }
+
+    public IEnumerator AttackDuel(){
+        duelPress = true;
+        yield return new WaitForSeconds(0.2f);
+        UIManager.instance.ExclamationHide();
+        duelPress = false;
         CheckActions();
         foreach(PlayerController item in dicPlayers.Values){
             item.Init();
         }
         yield return new WaitForSeconds(2f);
         NewRound();
+    }
+
+    public void Reload(){
+        foreach(PlayerController item in dicPlayers.Values){
+            item.Reload();
+        }
     }
 
 }
