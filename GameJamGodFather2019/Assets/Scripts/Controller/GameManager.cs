@@ -59,6 +59,13 @@ public class GameManager : MonoBehaviour
                 reload = true;
             }
         }
+        if(Input.GetKeyDown(KeyCode.P)){
+            if(Time.timeScale > 0){
+                Pause();
+            }else{
+                Play();
+            }
+        }
     }
 
     public void AddNewPlayer(PlayerController player){
@@ -178,6 +185,13 @@ public class GameManager : MonoBehaviour
         duelActive = false;
         _play = true;
         NewRound();
+    }
+
+    public void Pause(){
+        Time.timeScale = 0f;
+    }
+    public void Play(){
+        Time.timeScale = 1f;
     }
 
 }

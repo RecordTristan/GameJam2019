@@ -442,6 +442,7 @@ GameObject:
   - component: {fileID: 512115893}
   - component: {fileID: 512115892}
   - component: {fileID: 512115896}
+  - component: {fileID: 512115897}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -546,6 +547,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exclamationGroup: {fileID: 1235205997}
   GoImage: {fileID: 1403529964}
+--- !u!114 &512115897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 512115891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef4eb5840f810e74aa70a5c2fdfb784e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &678695845
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2207,7 +2220,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 99035ed0df877234f9c127b3e6786396, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -2305,7 +2318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30579b09e45e017469e707c15e77b529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicPrincipal: {fileID: 0}
+  musicPrincipal: {fileID: 8300000, guid: 99035ed0df877234f9c127b3e6786396, type: 3}
   insults: []
   gresillement: {fileID: 0}
   swordTouch: {fileID: 0}
