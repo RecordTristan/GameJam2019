@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum KeyGamepad
@@ -15,6 +16,8 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public RulesController rules;
     public bool canPress = false;
+    public bool dieTime = false;
+    public bool duelActive = false;
     private KeyController _inputRules;
     private Dictionary<string,PlayerController> dicPlayers = new Dictionary<string, PlayerController>();
     private bool startTimer = true;
@@ -72,6 +75,7 @@ public class GameManager : MonoBehaviour
             startTimer = false;
         }
         canPress = true;
+        StartCoroutine(HideShowGo());
         yield return new WaitForSeconds(rules.timeSelect-1);
         UIManager.instance.ExclamationShow();
         yield return new WaitForSeconds(1f);
@@ -83,6 +87,12 @@ public class GameManager : MonoBehaviour
         }
         yield return new WaitForSeconds(2f);
         NewRound();
+    }
+
+    public IEnumerator HideShowGo(){
+        UIManager.instance.GoShow();
+        yield return new WaitForSeconds(1f);
+        UIManager.instance.GoHide();
     }
 
     public void CheckActions(){
@@ -98,8 +108,31 @@ public class GameManager : MonoBehaviour
     }
 
     public void NewRound(){
-        
-        StartCoroutine(Action());
+        duelActive = false;
+        List<PlayerController> players = dicPlayers.Select(g => g.Value).Where(g => !g.IsDead()).ToList();
+        if(players.Count == 2){
+            duelActive = true;
+            StartCoroutine(Duel());
+        }else{
+            StartCoroutine(Action());
+        }
+    }
+
+    public IEnumerator Duel(){
+        canPress = true;
+        dieTime = true;
+        StartCoroutine(HideShowGo());
+        yield return new WaitForSeconds(rules.timeSelect-rules.timeFinish);
+        dieTime = false;
+        UIManager.instance.ExclamationShow();
+        yield return new WaitForSeconds(rules.timeFinish);
+        canPress = false;
+        CheckActions();
+        foreach(PlayerController item in dicPlayers.Values){
+            item.Init();
+        }
+        yield return new WaitForSeconds(2f);
+        NewRound();
     }
 
 }

@@ -84,11 +84,11 @@ public class PlayerController : MonoBehaviour
                     Action("A");
                 }else if(Input.GetKeyDown(KeyCode.Joystick3Button1)){
                     HideArrows();
-                    TargetImages[2].SetActive(true);
+                    TargetImages[0].SetActive(true);
                     Action("B");
                 }else if(Input.GetKeyDown(KeyCode.Joystick3Button2)){
                     HideArrows();
-                    TargetImages[0].SetActive(true);
+                    TargetImages[2].SetActive(true);
                     Action("X");
                 }else if(Input.GetKeyDown(KeyCode.Joystick3Button3)){
                     HideArrows();
@@ -129,6 +129,10 @@ public class PlayerController : MonoBehaviour
     }
 
     public void Action(string Key){
+        if(GameManager.instance.dieTime){
+            Hit();
+            return;
+        }
         if(Key == key.ToString()){
             if(_shield > 0){
                 TargetImages[3].SetActive(true);
