@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour
     }
 
     public void Update(){
+        if(GameManager.instance.choosePlayer)
+            return;
         if(_isDead)
             return;
         if(!GameManager.instance.canPress && !GameManager.instance.duelPress)

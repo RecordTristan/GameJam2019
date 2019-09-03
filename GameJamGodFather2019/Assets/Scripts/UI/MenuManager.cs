@@ -25,11 +25,11 @@ public class MenuManager : MonoBehaviour
     }
 
     public void Tuto(){
-   SceneManager.LoadScene("");
+   SceneManager.LoadScene("MainScene");
     }
 
    public  void Play(){
-     SceneManager.LoadScene("");
+     SceneManager.LoadScene("SampleScene");
         Debug.Log("Loading!");
     }
 }

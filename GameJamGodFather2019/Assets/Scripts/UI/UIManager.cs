@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
     public GameObject exclamationGroup;
     public TextMeshProUGUI GoImage;
-
+    public ErrorModal error;
     
     void Awake(){
         if(GameManager.instance != null){
@@ -45,6 +45,5 @@ public class UIManager : MonoBehaviour
     public void BlackGo(){
         GoImage.color = Color.black;
     }
-
 
 }

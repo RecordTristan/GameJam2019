@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public bool dieTime = false;
     public bool duelActive = false;
     public bool duelPress = false;
+    public bool choosePlayer = false;
     private KeyController _inputRules;
     private Dictionary<string,PlayerController> dicPlayers = new Dictionary<string, PlayerController>();
     private bool startTimer = true;
@@ -41,6 +42,8 @@ public class GameManager : MonoBehaviour
             _inputRules = GetComponent<KeyController>();
         }
         _play = true;
+        ChoosePlayer();
+        Pause();
         StartCoroutine(Action());
     }
 
@@ -178,11 +181,13 @@ public class GameManager : MonoBehaviour
         foreach(PlayerController item in dicPlayers.Values){
             item.Reload();
         }
-        startTimer = true;
-        duelPress = false;
         canPress = false;
-        reload = false;
+        dieTime = false;
         duelActive = false;
+        duelPress = false;
+        choosePlayer = false;
+        startTimer = true;
+        reload = false;
         _play = true;
         NewRound();
     }
@@ -192,6 +197,24 @@ public class GameManager : MonoBehaviour
     }
     public void Play(){
         Time.timeScale = 1f;
+    }
+
+    public void ChoosePlayer(){
+        choosePlayer = true;
+    }
+
+    public void Choice(int joystick,KeyGamepad key){
+        PlayerController player = dicPlayers.Select(g => g.Value).SingleOrDefault(g => g.key == key);
+        PlayerController choosen = dicPlayers.Select(g => g.Value).SingleOrDefault(g => g.id == joystick);
+        if(player.id == -1 && choosen== null){
+            player.id = joystick;
+            List<PlayerController> last = dicPlayers.Select(g => g.Value).Where(g => g.id == -1).ToList();
+            if(last.Count == 0){
+                Play();
+                choosePlayer = false;
+            }   
+        }
+             
     }
 
 }

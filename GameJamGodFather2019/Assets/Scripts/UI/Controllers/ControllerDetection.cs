@@ -22,10 +22,12 @@ public class ControllerDetection : MonoBehaviour
                 if(!string.IsNullOrEmpty(temp[i]))
                 {
                     Debug.Log("Controller " + i + " is connected using: " + temp[i]);
+                    // UIManager.instance.error.ControllerNoProblem(i+1);
                 }
                 else
                 {
                     Debug.Log("Controller: " + i + " is disconnected.");
+                    // UIManager.instance.error.ControllerProblem(i+1);
                 }
             }
         }  
