@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -10,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public KeyGamepad key;
     public CounterDisplay healthDisplay;
     public CounterDisplay shieldDisplay;
-    public GameObject[] TargetImages;
+    public TargetImage[] targetImages;
     private int _shieldMax;
 
     private PlayerController _target;
@@ -37,83 +38,19 @@ public class PlayerController : MonoBehaviour
             return;
         if(!GameManager.instance.canPress && !GameManager.instance.duelPress)
             return;
-        switch(id){
-            case 1:
-                if (Input.GetKeyDown(KeyCode.Joystick1Button0) || Input.GetKeyDown(KeyCode.S))//Intéraction
-                {
-                    HideArrows();
-                    Action("A");
-                }else if(Input.GetKeyDown(KeyCode.Joystick1Button1) || Input.GetKeyDown(KeyCode.D)){
-                    HideArrows();
-                    TargetImages[2].SetActive(true);
-                    Action("B");
-                }else if(Input.GetKeyDown(KeyCode.Joystick1Button2) || Input.GetKeyDown(KeyCode.Q)){
-                    HideArrows();
-                    TargetImages[0].SetActive(true);
-                    Action("X");
-                }else if(Input.GetKeyDown(KeyCode.Joystick1Button3) || Input.GetKeyDown(KeyCode.Z)){
-                    HideArrows();
-                    TargetImages[1].SetActive(true);
-                    Action("Y");
-                }
-            break;
-            case 2:
-                if (Input.GetKeyDown(KeyCode.Joystick2Button0) || Input.GetKeyDown(KeyCode.G))//Intéraction
-                {
-                    HideArrows();
-                    TargetImages[2].SetActive(true);
-                    Action("A");
-                }else if(Input.GetKeyDown(KeyCode.Joystick2Button1) || Input.GetKeyDown(KeyCode.H)){
-                    HideArrows();
-                    TargetImages[1].SetActive(true);
-                    Action("B");
-                }else if(Input.GetKeyDown(KeyCode.Joystick2Button2) || Input.GetKeyDown(KeyCode.F)){
-                    HideArrows();
-                    Action("X");
-                }else if(Input.GetKeyDown(KeyCode.Joystick2Button3) || Input.GetKeyDown(KeyCode.T)){
-                    HideArrows();
-                    TargetImages[0].SetActive(true);
-                    Action("Y");
-                }
-            break;
-            case 3:
-                if (Input.GetKeyDown(KeyCode.Joystick3Button0))//Intéraction
-                {
-                    HideArrows();
-                    TargetImages[1].SetActive(true);
-                    Action("A");
-                }else if(Input.GetKeyDown(KeyCode.Joystick3Button1)){
-                    HideArrows();
-                    TargetImages[0].SetActive(true);
-                    Action("B");
-                }else if(Input.GetKeyDown(KeyCode.Joystick3Button2)){
-                    HideArrows();
-                    TargetImages[2].SetActive(true);
-                    Action("X");
-                }else if(Input.GetKeyDown(KeyCode.Joystick3Button3)){
-                    HideArrows();
-                    Action("Y");
-                }
-            break;
-            case 4:
-                if (Input.GetKeyDown(KeyCode.Joystick4Button0))//Intéraction
-                {
-                    HideArrows();
-                    TargetImages[0].SetActive(true);
-                    Action("A");
-                }else if(Input.GetKeyDown(KeyCode.Joystick4Button1)){
-                    HideArrows();
-                    Action("B");
-                }else if(Input.GetKeyDown(KeyCode.Joystick4Button2)){
-                    HideArrows();
-                    TargetImages[1].SetActive(true);
-                    Action("X");
-                }else if(Input.GetKeyDown(KeyCode.Joystick4Button3)){
-                    HideArrows();
-                    TargetImages[2].SetActive(true);
-                    Action("Y");
-                }
-            break;
+        if (Input.GetKeyDown("joystick "+id+" button 0"))//Intéraction
+        {
+            HideArrows();
+            Action("A");
+        }else if(Input.GetKeyDown("joystick "+id+" button 1")){
+            HideArrows();
+            Action("B");
+        }else if(Input.GetKeyDown("joystick "+id+" button 2")){
+            HideArrows();
+            Action("X");
+        }else if(Input.GetKeyDown("joystick "+id+" button 3")){
+            HideArrows();
+            Action("Y");
         }
     }
 
@@ -136,7 +73,7 @@ public class PlayerController : MonoBehaviour
         }
         if(Key == key.ToString()){
             if(_shield > 0){
-                TargetImages[3].SetActive(true);
+                targetImages[3].gameObject.SetActive(true);
                 _isBlocking = true;
                 _target = null;
                 // GameManager.instance.Block(this);
@@ -144,17 +81,18 @@ public class PlayerController : MonoBehaviour
                 // _shield--;
                 // shieldDisplay.Use();
             }else{
-                TargetImages[3].SetActive(false);
+                targetImages[3].gameObject.SetActive(false);
             }
         }else{
+            targetImages.SingleOrDefault(g => g.key.ToString() == Key).gameObject.SetActive(true);
             _target = GameManager.instance.GetPlayer(Key);
             _isBlocking = false;
             if(_target == null){
-                TargetImages[1].SetActive(false);
                 HideArrows();
             }else{
                 if(GameManager.instance.duelActive){
-                    StartCoroutine(GameManager.instance.AttackDuel());
+                    _target.Hit();
+                    HideArrows();
                 }
             }
             // _target = GameManager.instance.Attack(this,Key);
@@ -198,14 +136,21 @@ public class PlayerController : MonoBehaviour
         HideArrows();
     }
 
+    public void DuelMode(){
+        _health = 1;
+        _shield = 0;
+        healthDisplay.Init(_health);
+        shieldDisplay.Init(_shield);
+    }
 
     public void HideArrows(){
-        for(int i = TargetImages.Length;i-->0;){
-            TargetImages[i].SetActive(false);
+        for(int i = targetImages.Length;i-->0;){
+            targetImages[i].gameObject.SetActive(false);
         }
     }
     public void Reload(){
         this.gameObject.SetActive(true);
+        _isDead = false;
         _health = GameManager.instance.rules.health;
         _shield = GameManager.instance.rules.shieldStart;
         healthDisplay.Init(_health);

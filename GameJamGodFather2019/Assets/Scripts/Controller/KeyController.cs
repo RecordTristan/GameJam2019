@@ -8,6 +8,8 @@ public class KeyController : MonoBehaviour
         if(Player != Target.GetTarget() && !Target.IsBlock()){
             Player.Attack();
             Target.Hit();
+        }else{
+            Player.Attack();
         }
     }
 

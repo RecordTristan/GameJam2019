@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<string,PlayerController> dicPlayers = new Dictionary<string, PlayerController>();
     private bool startTimer = true;
     private bool reload = false;
+    private bool _play = true;
 
     void Awake(){
         if(GameManager.instance != null){
@@ -39,12 +40,24 @@ public class GameManager : MonoBehaviour
         if(_inputRules == null){
             _inputRules = GetComponent<KeyController>();
         }
+        _play = true;
         StartCoroutine(Action());
     }
 
     void Update(){
         if(Input.GetKeyDown(KeyCode.R) && reload){
             Reload();
+        }
+        if(_play){
+            List<PlayerController> players = dicPlayers.Select(g => g.Value).Where(g => !g.IsDead()).ToList();
+            if(players.Count == 1){
+                _play = false;
+                StopAllCoroutines();
+                UIManager.instance.GoHide();
+                UIManager.instance.ExclamationHide();
+
+                reload = true;
+            }
         }
     }
 
@@ -113,6 +126,9 @@ public class GameManager : MonoBehaviour
         duelActive = false;
         List<PlayerController> players = dicPlayers.Select(g => g.Value).Where(g => !g.IsDead()).ToList();
         if(players.Count == 2){
+            for(int i = players.Count;i-->0;){
+                players[i].DuelMode();
+            }
             duelActive = true;
             UIManager.instance.RedGo();
             StartCoroutine(Duel());
@@ -144,23 +160,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public IEnumerator AttackDuel(){
-        duelPress = true;
-        yield return new WaitForSeconds(0.2f);
-        UIManager.instance.ExclamationHide();
-        duelPress = false;
+    public void AttackDuel(){
         CheckActions();
         foreach(PlayerController item in dicPlayers.Values){
             item.Init();
         }
-        yield return new WaitForSeconds(2f);
-        NewRound();
     }
 
     public void Reload(){
         foreach(PlayerController item in dicPlayers.Values){
             item.Reload();
         }
+        startTimer = true;
+        duelPress = false;
+        canPress = false;
+        reload = false;
+        duelActive = false;
+        _play = true;
+        NewRound();
     }
 
 }
