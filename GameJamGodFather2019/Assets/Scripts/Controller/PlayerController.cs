@@ -41,62 +41,77 @@ public class PlayerController : MonoBehaviour
             case 1:
                 if (Input.GetKeyDown(KeyCode.Joystick1Button0) || Input.GetKeyDown(KeyCode.S))//Intéraction
                 {
+                    HideArrows();
                     Action("A");
                 }else if(Input.GetKeyDown(KeyCode.Joystick1Button1) || Input.GetKeyDown(KeyCode.D)){
-                    Action("B");
+                    HideArrows();
                     TargetImages[2].SetActive(true);
+                    Action("B");
                 }else if(Input.GetKeyDown(KeyCode.Joystick1Button2) || Input.GetKeyDown(KeyCode.Q)){
-                    Action("X");
+                    HideArrows();
                     TargetImages[0].SetActive(true);
+                    Action("X");
                 }else if(Input.GetKeyDown(KeyCode.Joystick1Button3) || Input.GetKeyDown(KeyCode.Z)){
-                    Action("Y");
-                    Debug.Log("OK");
+                    HideArrows();
                     TargetImages[1].SetActive(true);
+                    Action("Y");
                 }
             break;
             case 2:
                 if (Input.GetKeyDown(KeyCode.Joystick2Button0) || Input.GetKeyDown(KeyCode.G))//Intéraction
                 {
-                    Action("A");
+                    HideArrows();
                     TargetImages[2].SetActive(true);
+                    Action("A");
                 }else if(Input.GetKeyDown(KeyCode.Joystick2Button1) || Input.GetKeyDown(KeyCode.H)){
-                    Action("B");
+                    HideArrows();
                     TargetImages[1].SetActive(true);
+                    Action("B");
                 }else if(Input.GetKeyDown(KeyCode.Joystick2Button2) || Input.GetKeyDown(KeyCode.F)){
+                    HideArrows();
                     Action("X");
                 }else if(Input.GetKeyDown(KeyCode.Joystick2Button3) || Input.GetKeyDown(KeyCode.T)){
-                    Action("Y");
+                    HideArrows();
                     TargetImages[0].SetActive(true);
+                    Action("Y");
                 }
             break;
             case 3:
                 if (Input.GetKeyDown(KeyCode.Joystick3Button0))//Intéraction
                 {
-                    Action("A");
+                    HideArrows();
                     TargetImages[1].SetActive(true);
+                    Action("A");
                 }else if(Input.GetKeyDown(KeyCode.Joystick3Button1)){
-                    Action("B");
+                    HideArrows();
                     TargetImages[2].SetActive(true);
+                    Action("B");
                 }else if(Input.GetKeyDown(KeyCode.Joystick3Button2)){
-                    Action("X");
+                    HideArrows();
                     TargetImages[0].SetActive(true);
+                    Action("X");
                 }else if(Input.GetKeyDown(KeyCode.Joystick3Button3)){
+                    HideArrows();
                     Action("Y");
                 }
             break;
             case 4:
                 if (Input.GetKeyDown(KeyCode.Joystick4Button0))//Intéraction
                 {
-                    Action("A");
+                    HideArrows();
                     TargetImages[0].SetActive(true);
+                    Action("A");
                 }else if(Input.GetKeyDown(KeyCode.Joystick4Button1)){
+                    HideArrows();
                     Action("B");
                 }else if(Input.GetKeyDown(KeyCode.Joystick4Button2)){
-                    Action("X");
+                    HideArrows();
                     TargetImages[1].SetActive(true);
+                    Action("X");
                 }else if(Input.GetKeyDown(KeyCode.Joystick4Button3)){
-                    Action("Y");
+                    HideArrows();
                     TargetImages[2].SetActive(true);
+                    Action("Y");
                 }
             break;
         }
@@ -114,7 +129,6 @@ public class PlayerController : MonoBehaviour
     }
 
     public void Action(string Key){
-        HideArrows();
         if(Key == key.ToString()){
             if(_shield > 0){
                 TargetImages[3].SetActive(true);
