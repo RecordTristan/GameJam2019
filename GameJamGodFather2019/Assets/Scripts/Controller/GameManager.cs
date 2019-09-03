@@ -34,14 +34,13 @@ public class GameManager : MonoBehaviour
         if(_inputRules == null){
             _inputRules = GetComponent<KeyController>();
         }
+        StartCoroutine(Action());
     }
 
     void Update(){
         if(Input.GetKeyDown(KeyCode.Space)){
-            Debug.Log("OK");
-            StartCoroutine(Action());
+            // StartCoroutine(Action());
         }
-        Debug.Log(canPress);
     }
 
     public void AddNewPlayer(PlayerController player){
@@ -73,9 +72,15 @@ public class GameManager : MonoBehaviour
             startTimer = false;
         }
         canPress = true;
-        yield return new WaitForSeconds(rules.timeSelect);
+        yield return new WaitForSeconds(rules.timeSelect-1);
+        UIManager.instance.ExclamationShow();
+        yield return new WaitForSeconds(1f);
+        UIManager.instance.ExclamationHide();
         canPress = false;
         CheckActions();
+        foreach(PlayerController item in dicPlayers.Values){
+            item.Init();
+        }
         yield return new WaitForSeconds(2f);
         NewRound();
     }
@@ -93,9 +98,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void NewRound(){
-        foreach(PlayerController item in dicPlayers.Values){
-            item.Init();
-        }
+        
         StartCoroutine(Action());
     }
 

@@ -39,63 +39,64 @@ public class PlayerController : MonoBehaviour
             return;
         switch(id){
             case 1:
-                if (Input.GetKeyDown(KeyCode.Joystick1Button16) || Input.GetKeyDown(KeyCode.S))//Intéraction
+                if (Input.GetKeyDown(KeyCode.Joystick1Button0) || Input.GetKeyDown(KeyCode.S))//Intéraction
                 {
                     Action("A");
-                }else if(Input.GetKeyDown(KeyCode.Joystick1Button17) || Input.GetKeyDown(KeyCode.D)){
+                }else if(Input.GetKeyDown(KeyCode.Joystick1Button1) || Input.GetKeyDown(KeyCode.D)){
                     Action("B");
                     TargetImages[2].SetActive(true);
-                }else if(Input.GetKeyDown(KeyCode.Joystick1Button18) || Input.GetKeyDown(KeyCode.Q)){
+                }else if(Input.GetKeyDown(KeyCode.Joystick1Button2) || Input.GetKeyDown(KeyCode.Q)){
                     Action("X");
                     TargetImages[0].SetActive(true);
-                }else if(Input.GetKeyDown(KeyCode.Joystick1Button19) || Input.GetKeyDown(KeyCode.Z)){
+                }else if(Input.GetKeyDown(KeyCode.Joystick1Button3) || Input.GetKeyDown(KeyCode.Z)){
                     Action("Y");
+                    Debug.Log("OK");
                     TargetImages[1].SetActive(true);
                 }
             break;
             case 2:
-                if (Input.GetKeyDown(KeyCode.Joystick2Button16) || Input.GetKeyDown(KeyCode.G))//Intéraction
+                if (Input.GetKeyDown(KeyCode.Joystick2Button0) || Input.GetKeyDown(KeyCode.G))//Intéraction
                 {
                     Action("A");
-                    TargetImages[1].SetActive(true);
-                }else if(Input.GetKeyDown(KeyCode.Joystick2Button17) || Input.GetKeyDown(KeyCode.H)){
-                    Action("B");
                     TargetImages[2].SetActive(true);
-                }else if(Input.GetKeyDown(KeyCode.Joystick2Button18) || Input.GetKeyDown(KeyCode.F)){
+                }else if(Input.GetKeyDown(KeyCode.Joystick2Button1) || Input.GetKeyDown(KeyCode.H)){
+                    Action("B");
+                    TargetImages[1].SetActive(true);
+                }else if(Input.GetKeyDown(KeyCode.Joystick2Button2) || Input.GetKeyDown(KeyCode.F)){
                     Action("X");
-                }else if(Input.GetKeyDown(KeyCode.Joystick2Button19) || Input.GetKeyDown(KeyCode.T)){
+                }else if(Input.GetKeyDown(KeyCode.Joystick2Button3) || Input.GetKeyDown(KeyCode.T)){
                     Action("Y");
                     TargetImages[0].SetActive(true);
                 }
             break;
             case 3:
-                if (Input.GetKeyDown(KeyCode.Joystick3Button16))//Intéraction
+                if (Input.GetKeyDown(KeyCode.Joystick3Button0))//Intéraction
                 {
                     Action("A");
                     TargetImages[1].SetActive(true);
-                }else if(Input.GetKeyDown(KeyCode.Joystick3Button17)){
+                }else if(Input.GetKeyDown(KeyCode.Joystick3Button1)){
                     Action("B");
                     TargetImages[2].SetActive(true);
-                }else if(Input.GetKeyDown(KeyCode.Joystick3Button18)){
+                }else if(Input.GetKeyDown(KeyCode.Joystick3Button2)){
                     Action("X");
                     TargetImages[0].SetActive(true);
-                }else if(Input.GetKeyDown(KeyCode.Joystick3Button19)){
+                }else if(Input.GetKeyDown(KeyCode.Joystick3Button3)){
                     Action("Y");
                 }
             break;
             case 4:
-                if (Input.GetKeyDown(KeyCode.Joystick4Button16))//Intéraction
+                if (Input.GetKeyDown(KeyCode.Joystick4Button0))//Intéraction
                 {
                     Action("A");
-                    TargetImages[2].SetActive(true);
-                }else if(Input.GetKeyDown(KeyCode.Joystick4Button17)){
+                    TargetImages[0].SetActive(true);
+                }else if(Input.GetKeyDown(KeyCode.Joystick4Button1)){
                     Action("B");
-                }else if(Input.GetKeyDown(KeyCode.Joystick4Button18)){
+                }else if(Input.GetKeyDown(KeyCode.Joystick4Button2)){
                     Action("X");
                     TargetImages[1].SetActive(true);
-                }else if(Input.GetKeyDown(KeyCode.Joystick4Button19)){
+                }else if(Input.GetKeyDown(KeyCode.Joystick4Button3)){
                     Action("Y");
-                    TargetImages[0].SetActive(true);
+                    TargetImages[2].SetActive(true);
                 }
             break;
         }
@@ -129,6 +130,7 @@ public class PlayerController : MonoBehaviour
         }else{
             _target = GameManager.instance.GetPlayer(Key);
             if(_target == null){
+                TargetImages[1].SetActive(false);
                 HideArrows();
             }else{
                 _isBlocking = false;
